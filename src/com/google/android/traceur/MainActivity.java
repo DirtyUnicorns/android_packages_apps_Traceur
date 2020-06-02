@@ -18,6 +18,7 @@ package com.android.traceur;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.MenuItem;
 
 public class MainActivity extends Activity {
@@ -46,5 +47,17 @@ public class MainActivity extends Activity {
 
     public static void goUpToTopLevelSetting(Activity activity) {
         activity.finish();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        boolean developerOptionsIsEnabled =
+            Settings.Global.getInt(getApplicationContext().getContentResolver(),
+                Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) != 0;
+
+        if (!developerOptionsIsEnabled) {
+            finish();
+        }
     }
 }
